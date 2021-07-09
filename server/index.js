@@ -4,6 +4,7 @@ const path=require('path')
 const bodyParser = require('body-parser')
 const mongoose= require('mongoose')
 const Books=require('./model')
+const cors=require('cors')
 const port =process.env.PORT || 5000
 
 const mongodb='mongodb://localhost:27017/Books'
@@ -13,6 +14,7 @@ app.use(express.urlencoded({
   })
 )
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname, '..','client','build','index.html'))
@@ -40,7 +42,10 @@ app.post('/add',(req,res)=>{
 })
 
 app.delete('/delete',(req,res)=>{
-
+    Books.deleteOne({Title:req.body.Title},(err,res)=>{
+        if(err){console.log('There is a problem: '+err)}
+        res.send(res)
+    })
 })
 
 app.listen(port,()=>{
