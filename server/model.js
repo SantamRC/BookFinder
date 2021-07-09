@@ -9,7 +9,7 @@ let Books=new Schema({
         type:String
     },
     Date:{
-        type:Date
+        type:String
     }
 })
 

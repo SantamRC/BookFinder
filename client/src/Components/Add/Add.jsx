@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +22,7 @@ export default function Add() {
     const classes = useStyles()
     let [title,setTitle]=useState('')
     let [author,setAuthor]=useState('')
-    let [date,setDate]=useState('')
+    let [date,setDate]=useState('2021-07-11')
 
     const onSubmit=()=> {
       let body={
@@ -32,6 +33,7 @@ export default function Add() {
       axios.post('http://localhost:5000/add',body).then((res) => {
         console.log(res.data)
       }).catch(err=> console.log(err))
+      console.log(date)
     }
 
     return (
@@ -53,13 +55,14 @@ export default function Add() {
                 label="Date Published"
                 type="date"
                 defaultValue="2021-07-11"
+                format="yyyy-mm-dd"
                 className={classes.textField}
                 onChange={(e)=>setDate(e.target.value)}
                 InputLabelProps={{
                 shrink: true,
                 }}
             />
-            <Button onClick={()=>onSubmit()} variant="contained" color='primary'>Submit</Button>
+            <Button type='submit' onClick={()=>onSubmit()} variant="contained" color='primary'>Submit</Button>
         </form>
     )
 }

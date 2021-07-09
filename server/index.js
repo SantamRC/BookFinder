@@ -42,9 +42,16 @@ app.post('/add',(req,res)=>{
 })
 
 app.delete('/delete',(req,res)=>{
-    Books.deleteOne({Title:req.body.Title},(err,res)=>{
+    console.log('The book to be deleted is: '+req.body.data.Title)
+    Books.deleteOne({Title:req.body.data.Title},(err,response)=>{
         if(err){console.log('There is a problem: '+err)}
-        res.send(res)
+    }).then((bk)=>{
+        Books.find({},(err,books)=>{
+            if(err){console.log('There is a problem: '+err)}
+            res.status(200).send(books)
+        })
+    }).catch(err=>{
+        console.log('There is a problem: '+err)
     })
 })
 

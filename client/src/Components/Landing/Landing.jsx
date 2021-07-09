@@ -3,11 +3,13 @@ import { alpha, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import axios from 'axios'
+import Fuse from 'fuse.js'
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -67,12 +69,30 @@ export default function Landing() {
         console.log('The books are: '+res)
         setBooks(res.data)
       })
-    })
+    },[])
+
+    const query=(search)=>{
+      const options={
+        keys:['Title','Author']
+      }
+      const fuse=new Fuse(books, options)    
+      const result=fuse.search(search)
+      console.log(result)
+      let temp=[]
+      result.forEach(item=>{
+        temp.push(item.item)
+      })
+      setBooks(temp)
+    }
 
     const onDelete=(name)=>{
+      console.log("The book to be deleted: "+name)
       axios.delete('http://localhost:5000/delete',{
-        Title:name
+        data:{
+          data:{Title:name}
+        }
       }).then((res) => {
+        console.log(res.data)
         setBooks(res.data)
       })
     }
@@ -85,6 +105,9 @@ export default function Landing() {
                 </div>
                 <InputBase
                 placeholder="Search…"
+                onChange={(e)=>{
+                  query(e.target.value)
+                }}
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
