@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "frontend": "cd client && npm start",
-    "heroku-prebuild":"cd client",
-    "heroku-postbuild":"cd ../server && npm install && node index"
+    "heroku-postbuild":"cd client && npm install && node run build"
   },
   "repository": {
     "type": "git",
