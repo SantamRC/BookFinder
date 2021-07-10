@@ -26,6 +26,8 @@ app.get('/books',(req,res)=>{
     Books.find({},(err,books)=>{
         if(err){res.status(400).send(err)}
         res.status(200).send(books)
+    }).catch(err=>{
+        res.send('There is a problem: '+err)
     })
 })
 
