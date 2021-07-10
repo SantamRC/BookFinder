@@ -71,6 +71,8 @@ export default function Landing() {
         console.log('The books are: '+res)
         setBooks(res.data)
       })
+      // let data=JSON.parse(localStorage.getItem('books'))
+      // setBooks(data)
     },[])
 
     const query=(search)=>{
@@ -97,6 +99,8 @@ export default function Landing() {
         console.log(res.data)
         setBooks(res.data)
       })
+      // let data=JSON.parse(localStorage.getItem('books'))
+      // setBooks(data)
     }
 
     return (

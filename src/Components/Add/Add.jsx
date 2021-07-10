@@ -33,7 +33,10 @@ export default function Add() {
       axios.post('https://bookfinder101.herokuapp.com/add',body).then((res) => {
         console.log(res.data)
       }).catch(err=> console.log(err))
-      console.log(date)
+      // let data=JSON.parse(localStorage.getItem('books'))
+      // data.push(body)
+      // localStorage.setItem('books',JSON.stringify(data))
+      // console.log(date)
     }
 
     return (
