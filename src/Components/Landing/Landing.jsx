@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
     books:{
       marginTop:'5vh',
+      marginLeft:'2vw'
     },
     card:{
       backgroundColor:'rgb(166, 164, 164)',
