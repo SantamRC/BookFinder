@@ -15,16 +15,16 @@ const useStyles = makeStyles((theme) => ({
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: 'blue',
+      backgroundColor: 'rgb(115, 115, 115)',
       '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor: 'rgb(176, 176, 176)',
       },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
+      left:'15vw',
+      top:'2vh',
       width: '100%',
       [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '70vw',
       },
     },
     searchIcon: {
@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     books:{
-      display: 'flex'
+      display: 'flex',
+      marginTop:'5vh',
+      marginLeft:'2vw'
     },
     card:{
       backgroundColor:'rgb(166, 164, 164)',
@@ -134,6 +136,7 @@ export default function Landing() {
                     <Button 
                     onClick={()=>onDelete(book.Title)}
                     color="secondary" 
+                    variant="contained"
                     size="small">Delete</Button>
                   </CardActions>
                 </Card>
