@@ -30,7 +30,7 @@ export default function Add() {
         Author:author,
         Date:date
       }
-      axios.post('http://localhost:5000/add',body).then((res) => {
+      axios.post('https://book-finder00.herokuapp.com/add',body).then((res) => {
         console.log(res.data)
       }).catch(err=> console.log(err))
       console.log(date)
