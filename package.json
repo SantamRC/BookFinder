@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "frontend": "cd client && npm start",
+    "heroku-prebuild":"cd client",
+    "heroku-postbuild":"cd ../server && npm install && node index"
   },
   "repository": {
     "type": "git",
