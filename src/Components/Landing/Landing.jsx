@@ -67,7 +67,7 @@ export default function Landing() {
     let [books,setBooks]=useState([])
 
     useEffect(() =>{
-      axios.get('https://book-finder00.herokuapp.com/books').then((res) => {
+      axios.get('https://bookfinder101.herokuapp.com/books').then((res) => {
         console.log('The books are: '+res)
         setBooks(res.data)
       })
@@ -89,7 +89,7 @@ export default function Landing() {
 
     const onDelete=(name)=>{
       console.log("The book to be deleted: "+name)
-      axios.delete('https://book-finder00.herokuapp.com/delete',{
+      axios.delete('https://bookfinder101.herokuapp.com/delete',{
         data:{
           data:{Title:name}
         }
