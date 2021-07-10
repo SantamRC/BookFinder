@@ -66,13 +66,19 @@ export default function Landing() {
     const classes = useStyles();
     let [books,setBooks]=useState([])
 
-    useEffect(() =>{
-      axios.get('https://bookfinder101.herokuapp.com/books').then((res) => {
-        console.log('The books are: '+res)
-        setBooks(res.data)
-      })
-      // let data=JSON.parse(localStorage.getItem('books'))
-      // setBooks(data)
+    // useEffect(() =>{
+    //   axios.get('https://bookfinder101.herokuapp.com/books').then((res) => {
+    //     console.log('The books are: '+res)
+    //     setBooks(res.data)
+    //   })
+    //   // let data=JSON.parse(localStorage.getItem('books'))
+    //   // setBooks(data)
+    // },[])
+    useEffect(()=>{
+      let data=JSON.parse(localStorage.getItem('books'))
+      if(data){
+        setBooks(data)
+      }
     },[])
 
     const query=(search)=>{
@@ -91,16 +97,28 @@ export default function Landing() {
 
     const onDelete=(name)=>{
       console.log("The book to be deleted: "+name)
-      axios.delete('https://bookfinder101.herokuapp.com/delete',{
-        data:{
-          data:{Title:name}
+      // axios.delete('https://bookfinder101.herokuapp.com/delete',{
+      //   data:{
+      //     data:{Title:name}
+      //   }
+      // }).then((res) => {
+      //   console.log(res.data)
+      //   setBooks(res.data)
+      // })
+      let data=JSON.parse(localStorage.getItem('books'))
+      data.forEach((item,index)=>{
+        if(item.Title==name){
+          delete data[index]
         }
-      }).then((res) => {
-        console.log(res.data)
-        setBooks(res.data)
       })
-      // let data=JSON.parse(localStorage.getItem('books'))
-      // setBooks(data)
+      let res=[]
+      data.forEach(item=>{
+        if(item){
+          res.push(item)
+        }
+      })
+      setBooks(res)
+      localStorage.setItem('books',JSON.stringify(res))
     }
 
     return (

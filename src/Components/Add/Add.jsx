@@ -30,13 +30,19 @@ export default function Add() {
         Author:author,
         Date:date
       }
-      axios.post('https://bookfinder101.herokuapp.com/add',body).then((res) => {
-        console.log(res.data)
-      }).catch(err=> console.log(err))
-      // let data=JSON.parse(localStorage.getItem('books'))
-      // data.push(body)
-      // localStorage.setItem('books',JSON.stringify(data))
-      // console.log(date)
+      // axios.post('https://bookfinder101.herokuapp.com/add',body).then((res) => {
+      //   console.log(res.data)
+      // }).catch(err=> console.log(err))
+      let data=JSON.parse(localStorage.getItem('books'))
+      if(data){
+        data.push(body)
+      }else{
+        data=[]
+        data.push(body)
+      }
+      
+      localStorage.setItem('books',JSON.stringify(data))
+      console.log(JSON.parse(localStorage.getItem('books')))
     }
 
     return (
@@ -65,7 +71,7 @@ export default function Add() {
                 shrink: true,
                 }}
             />
-            <Button type='submit' onClick={()=>onSubmit()} variant="contained" color='primary'>Submit</Button>
+            <Button onClick={()=>onSubmit()} variant="contained" color='primary'>Submit</Button>
         </form>
     )
 }
