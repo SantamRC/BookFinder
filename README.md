@@ -7,7 +7,7 @@
 - [ReactJs](https://reactjs.org/)
 - [Expressjs](https://expressjs.com/)
 - [Mongodb](https://www.mongodb.com/)
-- [React-Redux]()
+- [Nodejs](https://nodejs.org/en/)
 
 ### Tech Stack: 💻
 
