@@ -13,15 +13,25 @@ const useStyles = makeStyles((theme) => ({
        
       },
       textField: {
-        width:'30vw',
-        marginTop:'20px'
+        width:'70vw',
+        marginTop:'20px',
+        [theme.breakpoints.up('sm')]:{
+          width:'30vw',
+          marginTop:'20px',
+        }
       },
     
     paper:{
       height:'50vh',
-      width:'40vw',
+      width:'90vw',
       margin:'auto',
-      marginTop:'20px'
+      marginTop:'20px',
+      [theme.breakpoints.up('sm')]:{
+        height:'50vh',
+        width:'40vw',
+        margin:'auto',
+        marginTop:'20px',
+      }
     }
   }));
 
@@ -54,8 +64,6 @@ export default function Add() {
 
     return (
       <Paper elevation={3} className={classes.paper} >
-
-     
         <form onSubmit={()=>onSubmit()} className={classes.container} Validate autoComplete="off">
           <Grid container
               direction="column"

@@ -16,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
-  },
+    '&:hover':{
+      cursor: 'pointer',
+    }
+  }
 }));
 
 export default function Navbar() {
@@ -35,7 +37,7 @@ export default function Navbar() {
           <Typography onClick={()=>goLanding()} variant="h6" className={classes.title}>
             Book Finder
           </Typography>
-          <Button component={Link} to={'/add'} color="inherit">Add New Book</Button>
+          <Button style={{marginLeft:'auto'}} component={Link} to={'/add'} color="inherit">Add New Book</Button>
         </Toolbar>
       </AppBar>
     </div>

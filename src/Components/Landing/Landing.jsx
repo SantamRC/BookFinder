@@ -15,17 +15,18 @@ import Grid from '@material-ui/core/Grid';
 const useStyles = makeStyles((theme) => ({
     search: {
       position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: 'rgb(115, 115, 115)',
+      borderRadius: '200px',
+      backgroundColor: 'rgb(2, 190, 247)',
       '&:hover': {
-        backgroundColor: 'rgb(176, 176, 176)',
+        backgroundColor: 'rgb(145, 225, 250)',
       },
-      left:'15vw',
+      left:'5vw',
       top:'2vh',
-      width: '100%',
+      width: '90vw',
       [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
         width: '70vw',
+        left:'15vw',
       },
     },
     searchIcon: {
@@ -51,13 +52,21 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     books:{
-      marginTop:'5vh',
-      marginLeft:'2vw'
+     
     },
     card:{
       backgroundColor:'rgb(166, 164, 164)',
-      width: '20%',
-      marginRight:'5%'
+      width: '80vw',
+      marginLeft:'10vw',
+      marginTop:'5vh',
+      borderRadius: '10px',
+      [theme.breakpoints.up('sm')]:{
+        backgroundColor:'rgb(166, 164, 164)',
+        marginLeft:'1vw',
+        width: '20vw',
+        marginRight:'5%',
+        borderRadius: '10px',
+      }
     }
 }
 ));
@@ -139,18 +148,20 @@ export default function Landing() {
                 inputProps={{ 'aria-label': 'search' }}
                 />
           </div>
-          <Grid className={classes.books} container spacing={1}>
+          <div className={classes.books} >
+          <Grid container spacing={3}>
             {
               books.map((book) =>(
+                <Grid item sm={3}>
                 <Card className={classes.card}>
                   <CardContent>
-                    <Typography align='center' variant="h5" component="h2">
+                    <Typography align='center' variant="h3">
                       {book.Title}
                     </Typography>
-                    <Typography align='center' variant="body2" component="p">
+                    <Typography align='center' variant="h5" component="p">
                     {book.Author}
                     </Typography>
-                    <Typography align='center' variant="body2" component="h3">
+                    <Typography align='center' variant="h5" component="h3">
                     {book.Date}
                     </Typography>
                   </CardContent>
@@ -163,9 +174,11 @@ export default function Landing() {
                     size="small">Delete</Button>
                   </CardActions>
                 </Card>
+                </Grid>
               ))
             }
-          </Grid>
+            </Grid>
+          </div>
         </div>
     )
 }
