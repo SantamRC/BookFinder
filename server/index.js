@@ -9,7 +9,7 @@ const cors=require('cors')
 const port =process.env.PORT || 5000
 
 //const mongodb='mongodb://localhost:27017/Books'
-const mongodb=`mongodb+srv://santam:santam12345@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const mongodb='mongodb+srv://santam:santam12345@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 app.use(express.urlencoded({
     extended: true
