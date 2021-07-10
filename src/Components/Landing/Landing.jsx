@@ -9,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,9 +51,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     books:{
-      display: 'flex',
       marginTop:'5vh',
-      marginLeft:'2vw'
     },
     card:{
       backgroundColor:'rgb(166, 164, 164)',
@@ -139,23 +138,24 @@ export default function Landing() {
                 inputProps={{ 'aria-label': 'search' }}
                 />
           </div>
-          <div className={classes.books}>
+          <Grid className={classes.books} container spacing={1}>
             {
               books.map((book) =>(
                 <Card className={classes.card}>
                   <CardContent>
-                    <Typography variant="h5" component="h2">
+                    <Typography align='center' variant="h5" component="h2">
                       {book.Title}
                     </Typography>
-                    <Typography variant="body2" component="p">
+                    <Typography align='center' variant="body2" component="p">
                     {book.Author}
                     </Typography>
-                    <Typography variant="body2" component="h3">
+                    <Typography align='center' variant="body2" component="h3">
                     {book.Date}
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button 
+                    style={{margin:'auto'}}
                     onClick={()=>onDelete(book.Title)}
                     color="secondary" 
                     variant="contained"
@@ -164,7 +164,7 @@ export default function Landing() {
                 </Card>
               ))
             }
-          </div>
+          </Grid>
         </div>
     )
 }

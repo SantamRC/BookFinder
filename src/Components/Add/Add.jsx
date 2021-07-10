@@ -3,19 +3,26 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
-import moment from 'moment';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+   
       container: {
-        width: '25ch',
-        margin:'auto'
+       
       },
       textField: {
-        marginTop:200,
-        display: 'block',
+        width:'30vw',
+        marginTop:'20px'
       },
-    },
+    
+    paper:{
+      height:'50vh',
+      width:'40vw',
+      margin:'auto',
+      marginTop:'20px'
+    }
   }));
 
 export default function Add() {
@@ -46,14 +53,23 @@ export default function Add() {
     }
 
     return (
-        <form className={classes.container} noValidate autoComplete="off">
+      <Paper elevation={3} className={classes.paper} >
+
+     
+        <form onSubmit={()=>onSubmit()} className={classes.container} Validate autoComplete="off">
+          <Grid container
+              direction="column"
+              justifyContent="center"
+              alignItems="center">
             <TextField 
+              required
               id="standard-basic" 
               label="Title" 
               className={classes.textField} 
               onChange={(e)=>setTitle(e.target.value)}
             />
             <TextField 
+              required
               id="standard-basic" 
               label="Author" 
               className={classes.textField} 
@@ -71,8 +87,10 @@ export default function Add() {
                 shrink: true,
                 }}
             />
-            <Button onClick={()=>onSubmit()} variant="contained" color='primary'>Submit</Button>
+            <Button className={classes.textField} type='submit' variant="contained" color='primary'>Submit</Button>
+            </Grid>
         </form>
+        </Paper>
     )
 }
 
