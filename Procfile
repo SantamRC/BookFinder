@@ -1,1 +1,1 @@
-web: npm run build && cd server && npm install && node index.js
+web:cd server && npm install && node index.js
