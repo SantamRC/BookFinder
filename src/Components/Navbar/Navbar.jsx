@@ -38,6 +38,7 @@ export default function Navbar() {
             Book Finder
           </Typography>
           <Button style={{marginLeft:'auto'}} component={Link} to={'/add'} color="inherit">Add New Book</Button>
+          <Button style={{marginLeft:'auto'}} component={Link} to={'/auth'} color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </div>
