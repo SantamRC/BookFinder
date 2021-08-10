@@ -6,7 +6,10 @@ const bodyParser = require('body-parser')
 const mongoose= require('mongoose')
 const Books=require('./model')
 const cors=require('cors')
+const router= require('./router')
 const port =process.env.PORT || 5000
+const auth=require('./Middleware/auth')
+const {signup,login}=require('./Controllers/user')
 
 const mongodb='mongodb://localhost:27017/Books'
 //const mongodb=`mongodb+srv://santam:${process.env.PASSWORD}@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
@@ -15,9 +18,15 @@ app.use(express.urlencoded({
     extended: true
   })
 )
+
 app.use(bodyParser.json())
 app.use(cors())
 
+app.post('/signup',signup);
+app.post('/login',login);
+app.get('/token',auth,(req,res) => {
+    res.send("Authorized")
+})
 app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname, '..','build','index.html'))
 })

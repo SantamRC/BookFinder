@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -44,7 +43,28 @@ export default function Auth() {
     let [pass,setPass]=useState('')
 
     const onSubmit=()=> {
-
+      if(isSignup) {
+        axios.post(`${process.env.REACT_APP_HOST}/signup`,{
+          username:user,
+          name:name,
+          password:pass
+        }).then((res) => {
+          console.log(res.data)
+        }).catch((err) => {
+          console.log(err.response.status)
+        })
+      }else{
+        axios.post(`${process.env.REACT_APP_HOST}/login`,{
+          username:user,
+          password:pass
+        }).then((res) => {
+          console.log(res.data)
+        }).catch((err) => {
+          if(err.response.status===404){
+            alert('Invalid Credentials')
+          }
+        })
+      }
     }
 
     return (
@@ -82,7 +102,7 @@ export default function Auth() {
                 className={classes.textField}
                 onChange={(e)=>setPass(e.target.value)}
             />}
-            <Button className={classes.textField} type='submit' variant="contained" color='primary'>
+            <Button className={classes.textField} onClick={()=>onSubmit()} variant="contained" color='primary'>
                 {isSignup?("Signup"):("Login")}
             </Button>
             <Typography variant="h5" onClick={()=>setSignup(!isSignup)}>
