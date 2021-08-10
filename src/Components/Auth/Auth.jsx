@@ -6,6 +6,8 @@ import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import { useDispatch } from 'react-redux';
+import action from '../../Redux/action'
 
 const useStyles = makeStyles((theme) => ({
    
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Auth() {
     const classes = useStyles()
+    const dispatch=useDispatch()
     let [isSignup,setSignup]=useState(false)
     let [user,setUser]=useState('')
     let [name,setName]=useState('')
@@ -59,10 +62,16 @@ export default function Auth() {
           password:pass
         }).then((res) => {
           console.log(res.data)
+          dispatch(action(
+            res.data.result.username,
+            res.data.result.name,
+            res.data.token
+          ))
         }).catch((err) => {
           if(err.response.status===404){
             alert('Invalid Credentials')
           }
+          console.log(err)
         })
       }
     }
