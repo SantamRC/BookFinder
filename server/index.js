@@ -33,12 +33,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
-app.get("/books/:username", (req, res) => {
+app.post("/books/:username", (req, res) => {
   Books.find({ username: req.params.username }, (err, books) => {
     if (err) {
       res.status(400).send(err);
     }
-    res.status(200).send(books);
+    res.status(200).send(books[0].Books);
   }).catch((err) => {
     res.send("There is a problem: " + err);
   });
@@ -67,7 +67,7 @@ app.post("/add/:username", (req, res) => {
           res.status(400).send("There is a problem: " + err);
         });
     } else {
-      Books.update(
+      Books.updateOne(
         { username: req.params.username },
         { $push: { Books: data } },
         (err,success)=>{
@@ -83,17 +83,18 @@ app.post("/add/:username", (req, res) => {
 });
 
 app.delete('/delete/:username/:id',(req,res)=>{
-   Books.update(
+   Books.updateOne(
        { username: req.params.username},
        {$pull:{Books:{_id:req.params.id}}},
        (err,success)=>{
         if(err) {
             console.log("There is a problem: " + err)
-        }else{
-            res.send('Book Deleted')
         }
-    }
+      }
    )
+   Books.findOne({username: req.params.username}).then(result => {
+     res.send(result.Books)
+   })
 })
 
 app.listen(port,()=>{

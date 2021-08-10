@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
-import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-
+import {useSelector} from 'react-redux'
+ 
 const useStyles = makeStyles((theme) => ({
    
       container: {
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Add() {
     const classes = useStyles()
+    const state=useSelector(state =>state)
     let [title,setTitle]=useState('')
     let [author,setAuthor]=useState('')
     let [date,setDate]=useState('2021-07-11')
@@ -47,24 +48,19 @@ export default function Add() {
         Author:author,
         Date:date
       }
-      // axios.post('https://bookfinder101.herokuapp.com/add',body).then((res) => {
-      //   console.log(res.data)
-      // }).catch(err=> console.log(err))
-      let data=JSON.parse(localStorage.getItem('books'))
-      if(data){
-        data.push(body)
-      }else{
-        data=[]
-        data.push(body)
+      axios.post(`${process.env.REACT_APP_HOST}/add/${state.username}`,
+      body,
+      {
+        headers: { Authorization: `Bearer ${state.token}` }
       }
-      
-      localStorage.setItem('books',JSON.stringify(data))
-      console.log(JSON.parse(localStorage.getItem('books')))
+      ).then((res) => {
+        console.log(res.data)
+      }).catch(err=> console.log(err))
     }
 
     return (
       <Paper elevation={3} className={classes.paper} >
-        <form onSubmit={()=>onSubmit()} className={classes.container} Validate autoComplete="off">
+        <form className={classes.container} Validate autoComplete="off">
           <Grid container
               direction="column"
               justifyContent="center"
@@ -95,7 +91,7 @@ export default function Add() {
                 shrink: true,
                 }}
             />
-            <Button className={classes.textField} type='submit' variant="contained" color='primary'>Submit</Button>
+            <Button onClick={()=>onSubmit()} className={classes.textField} variant="contained" color='primary'>Submit</Button>
             </Grid>
         </form>
         </Paper>
