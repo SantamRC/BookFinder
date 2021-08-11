@@ -12,8 +12,7 @@ const port = process.env.PORT || 5000;
 const auth = require("./Middleware/auth");
 const { signup, login } = require("./Controllers/user");
 
-const mongodb = "mongodb://localhost:27017/Books";
-//const mongodb=`mongodb+srv://santam:${process.env.PASSWORD}@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const mongodb = `${process.env.DB}`;
 
 app.use(
   express.urlencoded({
@@ -42,43 +41,29 @@ app.post("/books/:username", (req, res) => {
   }).catch((err) => {
     res.send("There is a problem: " + err);
   });
-  res.send({})
+  res.send({});
 });
 
-app.post("/add/:username", (req, res) => {
+app.post("/add/:username",auth, (req, res) => {
   let data = {
     Title: req.body.Title,
     Author: req.body.Author,
     Date: req.body.Date,
   };
-  let body = {
-    username: req.params.username,
-    Books: data,
-  };
-  let newBook = new Books(body);
-  Books.findOne({ username: req.params.username }, (err, result) => {
-      Books.updateOne(
-        { username: req.params.username },
-        { $push: { Books: data } },
-        (err,success)=>{
-            if(err) {
-                console.log("There is a problem: " + err)
-            }else{
-                res.send('Book Added')
-            }
-        }
-      );
-    })
-    newBook
-    .save()
-    .then(() => {
-      res.status(200).send("Book saved");
-    })
-    .catch((err) => {
-      console.log("There is a problem: " + err);
-      res.status(400).send("There is a problem: " + err);
-    })
+  Books.updateOne(
+    { username: req.params.username },
+    { $push: { Books: data } },
+    { upsert: true },
+    (err, success) => {
+      if (err) {
+        console.log("There is a problem: " + err);
+      } else {
+        res.send("Book Added");
+      }
+    }
+  );
 });
+
 
 app.delete('/delete/:username/:id',(req,res)=>{
    Books.updateOne(

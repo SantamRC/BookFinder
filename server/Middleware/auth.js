@@ -5,6 +5,7 @@ const auth=(req,res,next)=>{
     jwt.verify(token,'secret',(err,decoded)=>{
         if(err) {
             res.send('Failed Authorization')
+            res.end()
         }
         next()
     });    
