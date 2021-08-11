@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 const Schema=mongoose.Schema
 
-let Books=new Schema({
-    Title:{
+let user=new Schema({
+    username:{
         type:String
     },
-    Author:{
+    name:{
         type:String
     },
-    Date:{
+    password:{
         type:String
     }
 })
 
-module.exports=mongoose.model('Books',Books);
+module.exports=mongoose.model('user',user);

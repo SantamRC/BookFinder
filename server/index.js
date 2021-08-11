@@ -4,59 +4,79 @@ const app=express()
 const path=require('path')
 const bodyParser = require('body-parser')
 const mongoose= require('mongoose')
-const Books=require('./model')
-const cors=require('cors')
-const port =process.env.PORT || 5000
+const Books = require("./Models/books");
+const user = require("./Models/user");
+const cors = require("cors");
+const router = require("./router");
+const port = process.env.PORT || 5000;
+const auth = require("./Middleware/auth");
+const { signup, login } = require("./Controllers/user");
 
-const mongodb='mongodb://localhost:27017/Books'
-//const mongodb=`mongodb+srv://santam:${process.env.PASSWORD}@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const mongodb = `${process.env.DB}`;
 
-app.use(express.urlencoded({
-    extended: true
+app.use(
+  express.urlencoded({
+    extended: true,
   })
-)
-app.use(bodyParser.json())
-app.use(cors())
+);
 
-app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname, '..','build','index.html'))
-})
+app.use(bodyParser.json());
+app.use(cors());
 
-app.get('/books',(req,res)=>{
-    Books.find({},(err,books)=>{
-        if(err){res.status(400).send(err)}
-        res.status(200).send(books)
-    }).catch(err=>{
-        res.send('There is a problem: '+err)
-    })
-})
+app.post("/signup", signup);
+app.post("/login", login);
+app.get("/token", auth, (req, res) => {
+  res.send("Authorized");
+});
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
 
-app.post('/add',(req,res)=>{
-    let body={
-        Title:req.body.Title,
-        Author:req.body.Author,
-        Date:req.body.Date
+app.post("/books/:username", (req, res) => {
+  Books.find({ username: req.params.username }, (err, books) => {
+    if (err) {
+      res.status(400).send(err);
     }
-    let newBook=new Books(body)
-    newBook.save().then(()=>{
-        res.status(200).send('Book saved')
-    }).catch(err=>{
-        res.status(400).send('There is a problem: '+err)
-    })
-})
+    res.status(200).send(books[0].Books);
+  }).catch((err) => {
+    res.send("There is a problem: " + err);
+  });
+  res.send({});
+});
 
-app.delete('/delete',(req,res)=>{
-    console.log('The book to be deleted is: '+req.body.data.Title)
-    Books.deleteOne({Title:req.body.data.Title},(err,response)=>{
-        if(err){console.log('There is a problem: '+err)}
-    }).then((bk)=>{
-        Books.find({},(err,books)=>{
-            if(err){console.log('There is a problem: '+err)}
-            res.status(200).send(books)
-        })
-    }).catch(err=>{
-        console.log('There is a problem: '+err)
-    })
+app.post("/add/:username",auth, (req, res) => {
+  let data = {
+    Title: req.body.Title,
+    Author: req.body.Author,
+    Date: req.body.Date,
+  };
+  Books.updateOne(
+    { username: req.params.username },
+    { $push: { Books: data } },
+    { upsert: true },
+    (err, success) => {
+      if (err) {
+        console.log("There is a problem: " + err);
+      } else {
+        res.send("Book Added");
+      }
+    }
+  );
+});
+
+app.delete('/delete/:username/:id',(req,res)=>{
+   Books.updateOne(
+       { username: req.params.username},
+       {$pull:{Books:{_id:req.params.id}}},
+       (err,success)=>{
+        if(err) {
+            console.log("There is a problem: " + err)
+        }
+      }
+   )
+   Books.findOne({username: req.params.username}).then(result => {
+     res.send(result.Books)
+   })
 })
 
 app.listen(port,()=>{

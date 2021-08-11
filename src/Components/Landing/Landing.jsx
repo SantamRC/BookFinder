@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import axios from 'axios'
@@ -10,6 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import {useSelector} from 'react-redux'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,22 +74,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Landing() {
     const classes = useStyles();
+    const state=useSelector(state =>state)
     let [books,setBooks]=useState([])
 
-    // useEffect(() =>{
-    //   axios.get('https://bookfinder101.herokuapp.com/books').then((res) => {
-    //     console.log('The books are: '+res)
-    //     setBooks(res.data)
-    //   })
-    //   // let data=JSON.parse(localStorage.getItem('books'))
-    //   // setBooks(data)
-    // },[])
-    useEffect(()=>{
-      let data=JSON.parse(localStorage.getItem('books'))
-      if(data){
-        setBooks(data)
+    useEffect(() =>{
+      axios.post(`${process.env.REACT_APP_HOST}/books/${state.username}`,
+      {
+        headers: { Authorization: `Bearer ${state.token}` }
       }
+      ).then((res) => {
+        console.log('The books are: '+res.data)
+        setBooks(res.data)
+        console.log(books)
+      })
     },[])
+
 
     const query=(search)=>{
       const options={
@@ -98,36 +98,19 @@ export default function Landing() {
       const result=fuse.search(search)
       console.log(result)
       let temp=[]
+      let copy=books
       result.forEach(item=>{
         temp.push(item.item)
       })
       setBooks(temp)
     }
 
-    const onDelete=(name)=>{
-      console.log("The book to be deleted: "+name)
-      // axios.delete('https://bookfinder101.herokuapp.com/delete',{
-      //   data:{
-      //     data:{Title:name}
-      //   }
-      // }).then((res) => {
-      //   console.log(res.data)
-      //   setBooks(res.data)
-      // })
-      let data=JSON.parse(localStorage.getItem('books'))
-      data.forEach((item,index)=>{
-        if(item.Title==name){
-          delete data[index]
-        }
+    const onDelete=(id)=>{
+      axios.delete(`${process.env.REACT_APP_HOST}/delete/${state.username}/${id}`
+      ).then((res) => {
+        console.log(res.data)
+        setBooks(res.data)
       })
-      let res=[]
-      data.forEach(item=>{
-        if(item){
-          res.push(item)
-        }
-      })
-      setBooks(res)
-      localStorage.setItem('books',JSON.stringify(res))
     }
 
     return (
@@ -168,7 +151,7 @@ export default function Landing() {
                   <CardActions>
                     <Button 
                     style={{margin:'auto'}}
-                    onClick={()=>onDelete(book.Title)}
+                    onClick={()=>onDelete(book._id)}
                     color="secondary" 
                     variant="contained"
                     size="small">Delete</Button>
