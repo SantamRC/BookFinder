@@ -12,7 +12,8 @@ const port = process.env.PORT || 5000;
 const auth = require("./Middleware/auth");
 const { signup, login } = require("./Controllers/user");
 
-const mongodb = `${process.env.DB}`;
+//const mongodb = `${process.env.DB}`;
+const mongodb='mongodb+srv://santam:santam12345@cluster.q6ixt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 app.use(
   express.urlencoded({
@@ -63,7 +64,6 @@ app.post("/add/:username",auth, (req, res) => {
     }
   );
 });
-
 
 app.delete('/delete/:username/:id',(req,res)=>{
    Books.updateOne(
