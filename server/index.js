@@ -2,6 +2,7 @@ const express=require('express')
 require('dotenv').config()
 const app=express()
 const path=require('path')
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser')
 const mongoose= require('mongoose')
 const Books = require("./Models/books");
@@ -24,7 +25,23 @@ app.use(
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post("/signup", signup);
+app.post("/signup",async (req, res)=>{
+  try
+    {
+        const {username,password,name}=req.body;
+        const existingUser=user.findOne({username})
+        if(!existingUser) return res.status(400).json({message: 'User already Exists'});
+        const hashedPassword= await bcrypt.hash(password,12);
+        const newuser=new user({username:username,password:hashedPassword,name:name})
+        newuser.save().then(()=>{
+            return res.status(200).send('User Created')
+        }).catch(err=>{
+            res.status(400).send('There is a problem: '+err)
+        })
+    }catch(err) {
+        return res.status(400).send(err)
+    }
+});
 app.post("/login", login);
 app.get("/token", auth, (req, res) => {
   res.send("Authorized");
