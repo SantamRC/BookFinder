@@ -42,6 +42,7 @@ app.post("/books/:username", (req, res) => {
   }).catch((err) => {
     res.send("There is a problem: " + err);
   });
+  res.send({})
 });
 
 app.post("/add/:username", (req, res) => {
@@ -56,17 +57,6 @@ app.post("/add/:username", (req, res) => {
   };
   let newBook = new Books(body);
   Books.findOne({ username: req.params.username }, (err, result) => {
-    if (result == null) {
-      newBook
-        .save()
-        .then(() => {
-          res.status(200).send("Book saved");
-        })
-        .catch((err) => {
-          console.log("There is a problem: " + err);
-          res.status(400).send("There is a problem: " + err);
-        });
-    } else {
       Books.updateOne(
         { username: req.params.username },
         { $push: { Books: data } },
@@ -78,8 +68,16 @@ app.post("/add/:username", (req, res) => {
             }
         }
       );
-    }
-  });
+    })
+    newBook
+    .save()
+    .then(() => {
+      res.status(200).send("Book saved");
+    })
+    .catch((err) => {
+      console.log("There is a problem: " + err);
+      res.status(400).send("There is a problem: " + err);
+    })
 });
 
 app.delete('/delete/:username/:id',(req,res)=>{
